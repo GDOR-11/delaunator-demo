@@ -127,7 +127,7 @@
 			resize();
 			window.onresize = resize;
 
-			var poisson_disc_sampler = new PoissonDiscSampler(25, 8, largura - 100, altura - 100);
+			var poisson_disc_sampler = new PoissonDiscSampler(50, 8, largura - 100, altura - 100);
 			var pontos = poisson_disc_sampler.sample();
 			for(var i = pontos.length - 1;i >= 0;i--) {
 				pontos.push(pontos[i].x + 50, pontos[i].y + 50);
