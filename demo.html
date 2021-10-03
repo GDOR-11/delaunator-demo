@@ -54,12 +54,17 @@
 		</div>
 		<script>
 			function desenhar() {
-				console.clear();
-				console.time('total');
-				console.time('delaunator');
+				var console_open = window.outerWidth - window.innerWidth >= 250 || window.outerHeight - window.innerHeight >= 174;
+				if(console_open) {
+					console.clear();
+					console.time('total');
+					console.time('delaunator');
+				}
 				var delaunay = new Delaunator(pontos);
-				console.log(console.timeEnd('delaunator'));
-				console.time('drawing');
+				if(console_open) {
+					console.timeEnd('delaunator');
+					console.time('drawing');
+				}
 				pincel.clearRect(0, 0, largura, altura);
 				pincel.strokeStyle = 'blue';
 				pincel.beginPath()
@@ -89,8 +94,10 @@
 					pincel.arc(pontos[i], pontos[i + 1], 5, 0, 2 * Math.PI);
 					pincel.fill();
 				}
-				console.timeEnd('drawing');
-				console.timeEnd('total');
+				if(console_open) {
+					console.timeEnd('drawing');
+					console.timeEnd('total');
+				}
 			}
 			function procecar_arquivo(file) {
 				var file_reader = new FileReader;
@@ -121,13 +128,16 @@
 				canvas.width = Math.max(canvas.width, largura);
 				canvas.height = Math.max(canvas.height, altura);
 				pincel.putImageData(img_data, 0, 0);
+
+				if(pontos != undefined) {
+					desenhar();
+				}
 			}
 			var canvas = document.getElementById('canvas');
 			var pincel = canvas.getContext('2d');
 			resize();
 			window.onresize = resize;
-
-			var poisson_disc_sampler = new PoissonDiscSampler(50, 8, largura - 100, altura - 100);
+			var poisson_disc_sampler = new PoissonDiscSampler(25, 8, largura - 100, altura - 100);
 			var pontos = poisson_disc_sampler.sample();
 			for(var i = pontos.length - 1;i >= 0;i--) {
 				pontos.push(pontos[i].x + 50, pontos[i].y + 50);
@@ -135,7 +145,7 @@
 			}
 			// var pontos = [];
 			// for(var i = 0;i < 1000;i++) {
-			// 	pontos.push(Math.floor(Math.random() * largura), Math.floor(Math.random() * altura));
+			// 	pontos.push(Math.floor((Math.random() * 0.9 + 0.05) * largura), Math.floor((Math.random() * 0.8 + 0.1) * altura));
 			// }
 			desenhar();
 
