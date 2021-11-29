@@ -54,17 +54,15 @@
 		</div>
 		<script>
 			function desenhar() {
-				var console_open = window.outerWidth - window.innerWidth >= 250 || window.outerHeight - window.innerHeight >= 174;
-				if(console_open) {
-					console.clear();
-					console.time('total');
-					console.time('delaunator');
-				}
+				console.clear();
+				console.time('total');
+				console.time('delaunator');
+
 				var delaunay = new Delaunator(pontos);
-				if(console_open) {
-					console.timeEnd('delaunator');
-					console.time('drawing');
-				}
+
+				console.timeEnd('delaunator');
+				console.time('drawing');
+
 				pincel.clearRect(0, 0, largura, altura);
 				pincel.strokeStyle = 'blue';
 				pincel.beginPath()
@@ -94,10 +92,9 @@
 					pincel.arc(pontos[i], pontos[i + 1], 5, 0, 2 * Math.PI);
 					pincel.fill();
 				}
-				if(console_open) {
-					console.timeEnd('drawing');
-					console.timeEnd('total');
-				}
+
+				console.timeEnd('drawing');
+				console.timeEnd('total');
 			}
 			function procecar_arquivo(file) {
 				var file_reader = new FileReader;
@@ -108,19 +105,19 @@
 				}
 				file_reader.readAsText(file);
 			}
-            function download() {
-            	var nome_arquivo = 'points.txt';
-            	var texto = '';
-            	for(var i = 0;i < pontos.length;i += 2) {
-            		texto += pontos[i] + ',' + pontos[i + 1] + '\n';
-            	}
+			function download() {
+				var nome_arquivo = 'points.txt';
+				var texto = '';
+				for(var i = 0;i < pontos.length;i += 2) {
+					texto += pontos[i] + ',' + pontos[i + 1] + '\n';
+				}
 				var a = document.createElement('a');
 				a.setAttribute('href','data:text/plain;charset=utf-8, ' + encodeURIComponent(texto));
 				a.setAttribute('download', nome_arquivo);
 				document.body.appendChild(a);
 				a.click();
 				document.body.removeChild(a);
-            }
+			}
 			function resize() {
 				largura = window.innerWidth;
 				altura = window.innerHeight;
